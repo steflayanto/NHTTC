@@ -70,9 +70,9 @@ struct TTCParams {
   float k_dist = 0.1f;
   float dist_smooth = -10.0f;
 
-  Eigen::VectorXf x_0;
-  Eigen::VectorXf u_curr;
-  std::vector<TTCObstacle*> obsts;
+  Eigen::VectorXf x_0; // current position
+  Eigen::VectorXf u_curr; // current controls
+  std::vector<TTCObstacle*> obsts; // obstacle list
 
   float dt_step = 0.1f;
   float max_ttc = 5.0f;

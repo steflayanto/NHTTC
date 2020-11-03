@@ -225,8 +225,8 @@ void Agent::UpdateGoal(Eigen::Vector2f new_goal) {
 			}
 }
 
-void Agent::SetEgo(Eigen::VectorXf new_x_0) {
-  prob->params.x_0 = new_x_0;
+void Agent::SetEgo(Eigen::VectorXf new_x) {
+  prob->params.x_0 = new_x;
 }
 
 Eigen::VectorXf Agent::UpdateControls() {
@@ -286,4 +286,72 @@ void Agent::PrepareSGDParams() {
   opt_params.x_0 = prob->params.u_curr;
   opt_params.x_lb = prob->params.u_lb;
   opt_params.x_ub = prob->params.u_ub;
+}
+
+void ConstructGlobalParams(SGDOptParams *opt_params) {
+  opt_params->max_time = 10.0f;
+  opt_params->opt_mode = OptMode::SGD;
+  opt_params->alpha_mode = SGDAlphaMode::PolyakSemiKnown;
+  opt_params->sk_mode = SGDSkMode::Filtered;
+}
+
+std::vector<std::string> GetAgentParts(int agent_type, Eigen::Vector2f& pos, bool reactive, Eigen::Vector2f& goal) {
+  std::string type;
+  int p_dim, u_dim;
+  switch (agent_type) {
+    case 0:
+      type = "v";
+      p_dim = 2; u_dim = 2;
+      break;
+    case 1:
+      type = "a";
+      p_dim = 4; u_dim = 2;
+      break;
+    case 2:
+      type = "dd";
+      p_dim = 3; u_dim = 2;
+      break;
+    case 3:
+      type = "add";
+      p_dim = 5; u_dim = 2;
+      break;
+    case 4:
+      type = "car";
+      p_dim = 3; u_dim = 2;
+      break;
+    case 5:
+      type = "acar";
+      p_dim = 5; u_dim = 2;
+      break;
+    case 6:
+      type = "mushr";
+      p_dim = 3; u_dim = 2;
+      break;
+    default:
+      std::cerr << "Invalid virtual agent type: " << agent_type << std::endl;
+      exit(-1);
+  }
+  Eigen::VectorXf p = Eigen::VectorXf::Zero(p_dim);
+  Eigen::VectorXf u = Eigen::VectorXf::Zero(u_dim);
+  
+  // Set XY Heading
+  p[0] = pos[0];
+  p[1] = pos[1];
+  if (agent_type > 1) {
+    p[2] = pos[2];
+  }
+  std::vector<std::string> parts(3 + p_dim + u_dim + 2);
+  parts[0] = type;
+  parts[1] = "y";
+  parts[2] = (reactive ? "y" : "n");
+  for (int i = 0; i < p.size(); ++i) {
+    parts[3+i] = std::to_string(p[i]);
+  }
+  for (int i = 0; i < u.size(); ++i) {
+    parts[3 + p_dim + i] = std::to_string(u[i]);
+  }
+  parts[3 + p_dim + u_dim] = std::to_string(goal[0]);
+  parts[3 + p_dim + u_dim + 1] = std::to_string(goal[1]);
+
+  return parts;
 }
