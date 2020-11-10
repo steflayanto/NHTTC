@@ -188,10 +188,7 @@ void Agent::UpdateGoal(Eigen::Vector2f new_goal) {
   // if (new_goal != NULL) {
   goal = new_goal;
   // }
-  prob->params.goals.clear();
-			for (size_t i = 0; i < prob->params.ts_goal_check.size(); ++i) {
-				prob->params.goals.push_back(goal);
-			}
+  
 }
 
 void Agent::SetEgo(Eigen::VectorXf new_x) {
@@ -199,7 +196,17 @@ void Agent::SetEgo(Eigen::VectorXf new_x) {
 }
 
 Eigen::VectorXf Agent::UpdateControls() {
+  
+  // Push latest Agent goal to SGD params
+  prob->params.goals.clear();
+  for (size_t i = 0; i < prob->params.ts_goal_check.size(); ++i) {
+    prob->params.goals.push_back(goal);
+  }
+  
+  // Prepare params using global params
   PrepareSGDParams();
+
+  // Solve SGD
   float sgd_opt_cost;
   Eigen::VectorXf u_new = SGD::Solve(prob, opt_params, &sgd_opt_cost);
   prob->params.u_curr = 0.5f * (u_new + prob->params.u_curr); // Reciprocity

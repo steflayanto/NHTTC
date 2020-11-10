@@ -106,7 +106,7 @@ ConstructGlobalParams(&global_params);
 
 std::vector<Agent> agents;
 for every agent:
-  agents.emplace_back(GetAgentParts(int agent_type, Eigen::Vector2f& pos, bool reactive, Eigen::Vector2f& goal), global_params);
+  agents.emplace_back(GetAgentParts(int agent_type, Eigen::Vectorxf& pos, bool reactive, Eigen::Vector2f& goal), global_params);
 
 
 3. Declare Global Obstacle List
@@ -137,7 +137,7 @@ for every agent:
   agent.SetObstacles(agent, own_index, agent_obstacles) // will add all obstacles except for itself, by omitting obstacle at own index
 
 
-  5. Update the goal if desired (later when using carrot goal planner)
+  5. (Optional) Update the goal if desired (later when using carrot goal planner)
   agent.UpdateGoal(Eigen::Vector2f new_goal);
 
 
