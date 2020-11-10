@@ -264,7 +264,7 @@ void ConstructGlobalParams(SGDOptParams *opt_params) {
   opt_params->sk_mode = SGDSkMode::Filtered;
 }
 
-std::vector<std::string> GetAgentParts(int agent_type, Eigen::Vector2f& pos, bool reactive, Eigen::Vector2f& goal) {
+std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive, Eigen::Vector2f& goal) {
   std::string type;
   int p_dim, u_dim;
   switch (agent_type) {

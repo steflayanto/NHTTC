@@ -83,7 +83,7 @@ public:
 
 // Global Functions
 
-std::vector<std::string> GetAgentParts(int agent_type, Eigen::Vector2f& pos, bool reactive, Eigen::Vector2f& goal);
+std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive, Eigen::Vector2f& goal);
 
 void ConstructGlobalParams(SGDOptParams *opt_params);
 
