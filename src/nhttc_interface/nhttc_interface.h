@@ -83,6 +83,8 @@ public:
 
 // Global Functions
 
+std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive); // Default goal to current position
+
 std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive, Eigen::Vector2f& goal);
 
 void ConstructGlobalParams(SGDOptParams *opt_params);
@@ -116,7 +118,7 @@ std::vector<TTCObstacle*> obstacles = BuildObstacleList(agents);
 PLANNING CYCLES
 ------------------------------------------------------
 
-1. Update positions for each agent. Might want to expand this to set control actions too
+1. Update positions for each agent. Might want to put this in a separate ROS callback and expand this to set control actions too
 
 for every agent:
   agent.SetEgo(Eigen::VectorXf new_x_o); // Note: For the MuSHR car, x is [x, y, heading_angle] and u is [velocity, steering_angle]

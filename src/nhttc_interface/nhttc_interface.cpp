@@ -139,6 +139,12 @@ Agent::Agent(std::vector<std::string> parts, SGDOptParams opt_params_in) {
     u_dim =  2;
     x_dim = 3;
     SetBoundsMUSHR(params);
+    
+    // Additional parameter config for MuSHR
+    params.radius = 0.2;
+    params.safety_radius = 0.05;
+    params.max_ttc = 20;//std::min(6/max_velocity,20);
+    
     prob = new MUSHRTTCSGDProblem(params);
   } else {
     std::cerr << "Unsupported Dynamics Model: " << parts[0] << std::endl;
@@ -188,7 +194,7 @@ void Agent::UpdateGoal(Eigen::Vector2f new_goal) {
   // if (new_goal != NULL) {
   goal = new_goal;
   // }
-  
+
 }
 
 void Agent::SetEgo(Eigen::VectorXf new_x) {
@@ -269,6 +275,11 @@ void ConstructGlobalParams(SGDOptParams *opt_params) {
   opt_params->opt_mode = OptMode::SGD;
   opt_params->alpha_mode = SGDAlphaMode::PolyakSemiKnown;
   opt_params->sk_mode = SGDSkMode::Filtered;
+}
+
+std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive) {
+  Eigen::Vector2f goal(pos[0], pos[1]); // Initialize goal to own position by default
+  return GetAgentParts(agent_type, pos, reactive, goal);
 }
 
 std::vector<std::string> GetAgentParts(int agent_type, Eigen::VectorXf& pos, bool reactive, Eigen::Vector2f& goal) {
