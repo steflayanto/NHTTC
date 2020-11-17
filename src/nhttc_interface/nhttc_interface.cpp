@@ -141,9 +141,18 @@ Agent::Agent(std::vector<std::string> parts, SGDOptParams opt_params_in) {
     SetBoundsMUSHR(params);
     
     // Additional parameter config for MuSHR
-    params.radius = 0.2;
-    params.safety_radius = 0.05;
+    // wheelbase is ~17.5 inches(based on redcat chassis) -> 0.4445m long.
+    float length = 0.4445f; 
+    // Inside car kinematics, length is computed as 2 * 2 / sqrt(5) * radius.
+    // Therefore, reversing it, radius = length * sqrt(5) / 4.0
+    // params.radius = 0.2;
+    params.radius = length * std::sqrt(5.0f) / 4.0f;  // works out to be approx 0.248 m
+    // params.safety_radius = 0.05;
+    params.safety_radius = 0.05; // purpose of safety radius is unclear, set to 0.05m for now
     params.max_ttc = 20;//std::min(6/max_velocity,20);
+    params.vel_limit = 0.3f; // top speed of mushr set to 0.3 m/s?
+
+    // params.steer_limit = ; // still needs to be set
     
     prob = new MUSHRTTCSGDProblem(params);
   } else {
