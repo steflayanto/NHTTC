@@ -68,6 +68,7 @@ public:
   // Sets ego of Agent
   // Note: For the MuSHR car, x is [x, y, heading_angle] and u is [velocity, steering_angle]
   void SetEgo(Eigen::VectorXf new_x);
+  void SetControls(Eigen::VectorXf new_controls); //CHANGED
 
   // Controls can be extracted with agent->prob.params.ucurr at any time. This function runs the update and also returns the controls.
   // Note: For the MuSHR car, x is [x, y, heading_angle] and u is [velocity, steering_angle]
