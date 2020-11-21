@@ -550,8 +550,8 @@ TTCObstacle* ACARTTCSGDProblem::CreateObstacle() {
 // For partials, see eq. 27
 void MUSHRTTCSGDProblem::ContDynamics(const Eigen::VectorXf &u, const Eigen::VectorXf &x, const float t, Eigen::VectorXf* x_dot,
                                    Eigen::MatrixXf* dxdot_du, Eigen::MatrixXf* dxdot_dx) {
-//   float len_scale = 2.0f / std::sqrt(5.0f); //CHANGED 
-  float L = params.wheelbase; //CHANGED. 
+  float len_scale = 2.0f / std::sqrt(5.0f);
+  float L = 2.0f * len_scale * params.radius;
   if (x_dot != nullptr) {
     (*x_dot) = Eigen::VectorXf::Zero(3);
     (*x_dot)[0] = u[0] * std::cos(x[2]);
