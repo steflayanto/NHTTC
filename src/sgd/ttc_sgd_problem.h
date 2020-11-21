@@ -80,6 +80,11 @@ struct TTCParams {
   // Collision Parameters
   float radius = 0.1f;
   float safety_radius = 0.05f;
+  
+  // MuSHR Car Params
+  // float width = 0.285f;
+  // float length = 0.465f;
+  float wheel_base = 0.29f;
 
   // Constraint Parameters
   float vel_limit = 0.3f;
