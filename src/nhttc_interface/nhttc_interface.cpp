@@ -201,6 +201,11 @@ void Agent::SetEgo(Eigen::VectorXf new_x) {
   prob->params.x_0 = new_x;
 }
 
+void Agent::SetControls(Eigen::VectorXf new_controls) //CHANGED
+{
+  prob->params.u_curr = new_controls;
+}
+
 Eigen::VectorXf Agent::UpdateControls() {
   
   // Push latest Agent goal to SGD params
