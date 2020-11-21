@@ -78,8 +78,9 @@ struct TTCParams {
   float max_ttc = 5.0f;
 
   // Collision Parameters
-  float radius = 0.1f;
-  float safety_radius = 0.05f;
+  float radius = 0.465*sqrt(5)/4.0; //CHANGED
+  float safety_radius = 0.02f; //CHANGED
+  float wheelbase = 0.29f; //CHANGED
 
   // Constraint Parameters
   float vel_limit = 0.3f;
